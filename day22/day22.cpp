@@ -1,15 +1,12 @@
 /*
   day 22 - part a and b
   compile: g++ day22.cpp
-  run:     ./a.out
+  run:     ./a.out < p22-input.txt 
 */
 
 #include <iostream>
-#include <vector>
 #include <deque>
-#include <map>
 #include <string>
-#include <unordered_set>
 #include <set>
 
 using namespace std;
@@ -43,18 +40,15 @@ void calculateScore(deque<int> &p1, deque<int> &p2) {
   }
   cout << "score: " << score << endl;
 
-  // part 2
-  // low: 31843
-  // ans: 33647
 }
 
 void printCards(deque<int> & p) {
-
   for(auto x: p) {
     cout << x << ' ';
   }
   cout << endl;
 }
+
 
 // pass by value as subgames do not affect original game
 // return true - player 1 won, false - player 2 won
@@ -122,6 +116,29 @@ bool playGame2(deque<int> &p1, deque<int> &p2, int gameId) {
 }
 
 
+void playGame1(deque<int> &player1, deque<int> &player2) {
+  //int i=0;
+  while(!player1.empty() && !player2.empty()) {
+    if(player1.front() > player2.front()) {
+      player1.push_back(player1.front());
+      player1.push_back(player2.front());
+      player1.pop_front();
+      player2.pop_front();
+    } else {
+      player2.push_back(player2.front());
+      player2.push_back(player1.front());
+      player2.pop_front();
+      player1.pop_front();
+    }
+    //cout << "round: " << i++ << " player1 deck: " << player1.size() 
+      //                     << " player2 deck: " << player2.size() << endl;
+  }
+  cout << "part1 score:\n";
+  calculateScore(player1, player2);
+  cout << endl;
+}
+
+
 int main() {
   string playerName;  
   getline(cin, playerName);
@@ -136,10 +153,7 @@ int main() {
 
 
   cout << "player 1 cards:\n";
-  for(auto x: player1) {
-    cout << x << ' ';
-  }
-  cout << endl;
+  printCards(player1);
 
 
   string empty;
@@ -154,51 +168,22 @@ int main() {
     player2.push_back(card);
     i++;
   }
-
   cout << "player 2 cards:\n";
-  for(auto x: player2) {
-    cout << x << ' ';
-  }
-  cout << endl;
+  printCards(player2);
 
-/*
+
+  deque<int> p1 = player1;
+  deque<int> p2 = player2;
+
   cout << "game started, part 1\n";
-
-  i=0;
-  while(!player1.empty() && !player2.empty()) {
-    if(player1.front() > player2.front()) {
-      player1.push_back(player1.front());
-      player1.push_back(player2.front());
-      player1.pop_front();
-      player2.pop_front();
-    } else {
-      player2.push_back(player2.front());
-      player2.push_back(player1.front());
-      player2.pop_front();
-      player1.pop_front();
-    }
-    cout << "round: " << i++ << " player1 deck: " << player1.size() 
-                           << " player2 deck: " << player2.size() << endl;
-  }*/
-
+  playGame1(player1, player2);
+ //part 1 ans: 31308
   
   cout << "part 2 \n";
-  bool winner = playGame2(player1, player2, 1);
-
-/*
-  // calculate and print score part a
-  int score = 0;
-  if(player1.empty() || winner==true) {
-    swap(player1, player2); // set player 1 as winner
-  }
-
-  int n = player1.size();
-  for(i=n-1; i>=0; i--) {
-    score += player1[i] * (n-i);
-  }
-  cout << "score: " << score << endl;
-  // ans: 31308
-*/
+  bool winner = playGame2(p1, p2, 1);
+  // part 2
+  // low: 31843
+  // ans: 33647
 
 
   return 0;
