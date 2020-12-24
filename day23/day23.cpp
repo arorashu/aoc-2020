@@ -3,29 +3,12 @@
 #include <deque>
 #include <list>
 #include <algorithm>
-#include <unordered_map>
 
 using namespace std;
 
-template<typename T>
-void print(const vector<T> &arr) {
-  for(auto x: arr)
-    cout << x << ' ';
-  cout << endl;
-}
-
 
 template<typename T>
-void print(const deque<T> &arr) {
-  for(auto x: arr)
-    cout << x << ' ';
-  cout << endl;
-}
-
-
-
-template<typename T>
-void print(const list<T> &arr) {
+void print(const T &arr) {
   for(auto x: arr)
     cout << x << ' ';
   cout << endl;
@@ -106,14 +89,14 @@ int main() {
 
 // part 2
 #if 1
-  unordered_map<long, list<long>::iterator> posMap; 
-  //list<long> cups = {3, 8, 9, 1, 2, 5, 4, 6 ,7};
-  list<long> cups = {1, 2, 3, 4, 8, 7, 5, 9, 6};
   long rounds = 1e7;
   //long rounds = 10;
   i = rounds;
   long max_elem = 1e6;
   //long max_elem = 9;
+  vector<list<long>::iterator> posMap(max_elem + 1); 
+  //list<long> cups = {3, 8, 9, 1, 2, 5, 4, 6 ,7};
+  list<long> cups = {1, 2, 3, 4, 8, 7, 5, 9, 6};
   
   for(long j=10; j<=max_elem; j++) {
     cups.push_back(j);
@@ -124,7 +107,7 @@ int main() {
   auto curIt = cups.begin();
 
   while(i--) {
-    cout << "round: " << rounds-i << endl;
+    //cout << "round: " << rounds-i << endl;
     //print(cups);
     long curVal = *curIt;
     //cout << "cur val: " << curVal << endl;
@@ -176,13 +159,16 @@ int main() {
   // print the succeeding nodes
   auto it1 = posMap[1];
   int x=2;
+  vector<int64_t> a(2);
   while(x--) {
     it1++;
     if(it1==cups.end())
       it1 = cups.begin();
     cout << *it1 << ' ';
+    a[x] = *it1;
   }
   cout << endl;
+  cout << "prod: " << a[0] * a[1] << endl;
   //cout << "test solution\n";
   // ans: 248009574232
 #endif
